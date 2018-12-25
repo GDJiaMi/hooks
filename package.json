@@ -1,0 +1,53 @@
+{
+  "name": "@gdjiami/hooks",
+  "version": "0.1.0",
+  "description": "react hooks for mygzb.com",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -d --outDir ./dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://code.ejiahe.com:82/WEB/jm-hooks.git"
+  },
+  "keywords": [
+    "react",
+    "react-hooks",
+    "mygzb",
+    "hooks"
+  ],
+  "author": "ivan",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.7.0",
+    "tslib": ">=1.9.3"
+  },
+  "devDependencies": {
+    "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
+    "docz": "^0.13.5",
+    "docz-theme-default": "^0.13.5",
+    "husky": "^1.2.1",
+    "prettier": "^1.15.3",
+    "pretty-quick": "^1.8.0",
+    "react": "^16.7.0-alpha.2",
+    "react-dom": "^16.7.0-alpha.2",
+    "tslib": "^1.9.3",
+    "typescript": "^3.2.2"
+  }
+}
