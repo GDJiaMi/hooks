@@ -21,6 +21,9 @@
     }
   },
   "jest": {
+    "testMatch": [
+      "**/__tests__/**/!(helper)*.ts?(x)"
+    ],
     "roots": [
       "src"
     ]
