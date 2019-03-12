@@ -8,3 +8,7 @@ export function delay() {
     }, 0);
   });
 }
+
+export function microDelay() {
+  return new Promise(res => res());
+}
