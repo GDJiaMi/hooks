@@ -1,25 +1,29 @@
 {
   "name": "@gdjiami/hooks",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "react hooks for mygzb.com",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "index.js",
+  "module": "index.js",
+  "typings": "index.d.ts",
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -d --outDir ./dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && tsc -b tsconfig-build.json && cp package.json dist && cp README.md dist",
+    "pub": "npm run build && cd dist && npm publish",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
-  "files": [
-    "dist"
-  ],
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "jest": {
+    "roots": [
+      "src"
+    ]
   },
   "repository": {
     "type": "git",
@@ -34,20 +38,27 @@
   "author": "ivan",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^16.7.0",
+    "react": "^16.8.0",
     "tslib": ">=1.9.3"
   },
   "devDependencies": {
-    "@types/react": "^16.7.18",
-    "@types/react-dom": "^16.0.11",
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.11",
+    "@types/react": "^16.8.7",
+    "@types/react-dom": "^16.8.2",
+    "babel-jest": "^24.4.0",
     "docz": "^0.13.5",
     "docz-theme-default": "^0.13.5",
     "husky": "^1.2.1",
+    "jest": "^24.4.0",
     "prettier": "^1.15.3",
     "pretty-quick": "^1.8.0",
-    "react": "^16.7.0-alpha.2",
-    "react-dom": "^16.7.0-alpha.2",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-hooks-testing-library": "^0.3.6",
     "tslib": "^1.9.3",
-    "typescript": "^3.2.2"
+    "typescript": "^3.3.3333"
   }
 }

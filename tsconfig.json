@@ -8,6 +8,8 @@
     "jsx": "react",
     "moduleResolution": "node",
     "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -25,5 +27,5 @@
     "skipLibCheck": true,
     "baseUrl": "."
   },
-  "exclude": ["node_modules", "lib", "es", "**/example/"]
+  "exclude": ["node_modules", "dist"]
 }
