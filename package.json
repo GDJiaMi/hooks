@@ -63,5 +63,8 @@
     "react-hooks-testing-library": "^0.3.6",
     "tslib": "^1.9.3",
     "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "react-hooks-global-state": "^0.7.0"
   }
 }

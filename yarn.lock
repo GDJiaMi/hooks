@@ -8064,6 +8064,11 @@ react-feather@^1.1.4:
   resolved "http://registry.npm.taobao.org/react-feather/download/react-feather-1.1.5.tgz#f7f9384c17d2d061b5b8298f46efc0e497f48469"
   integrity sha1-9/k4TBfS0GG1uCmPRu/A5Jf0hGk=
 
+react-hooks-global-state@^0.7.0:
+  version "0.7.0"
+  resolved "http://registry.npm.taobao.org/react-hooks-global-state/download/react-hooks-global-state-0.7.0.tgz#c50436fcd0d8da2849ebb878b6791d32250605e5"
+  integrity sha1-xQQ2/NDY2ihJ67h4tnkdMiUGBeU=
+
 react-hooks-testing-library@^0.3.6:
   version "0.3.6"
   resolved "http://registry.npm.taobao.org/react-hooks-testing-library/download/react-hooks-testing-library-0.3.6.tgz#e162c239dbb62b27a9800c2819f0b5cb1e8a3cd3"

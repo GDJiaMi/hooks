@@ -8,6 +8,8 @@ import usePrevious from "./usePrevious";
 import useTitle from "./useTitle";
 import useRefUnmounted from "./useRefUnmounted";
 
+export * from "react-hooks-global-state";
+
 export {
   useRefUnmounted,
   useTitle,
