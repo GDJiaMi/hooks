@@ -6,8 +6,10 @@ import usePromise from "./usePromise";
 import useInput from "./useInput";
 import usePrevious from "./usePrevious";
 import useTitle from "./useTitle";
+import useRefUnmounted from "./useRefUnmounted";
 
 export {
+  useRefUnmounted,
   useTitle,
   usePrevious,
   useInput,
