@@ -5,9 +5,16 @@ import { useState, useCallback } from "react";
  * @param defaultValue
  */
 export default function useToggle(
-  defaultValue?: boolean
-): [boolean, () => void] {
-  const [value, setValue] = useState(defaultValue || false);
+  defaultValue?: boolean,
+  adapter: (
+    defaultValue?: boolean
+  ) => [
+    boolean | undefined,
+    (cb: (value: boolean | undefined) => boolean) => void,
+    ...any[]
+  ] = useState
+): [boolean | undefined, () => void] {
+  const [value, setValue] = adapter(defaultValue);
 
   return [
     value,
