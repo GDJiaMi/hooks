@@ -9,8 +9,6 @@ import useTitle from "./useTitle";
 import useRefUnmounted from "./useRefUnmounted";
 import useToggle from "./useToggle";
 
-export * from "react-hooks-global-state";
-
 export {
   useRefUnmounted,
   useTitle,
