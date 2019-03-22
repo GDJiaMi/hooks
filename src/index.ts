@@ -8,6 +8,7 @@ import usePrevious from "./usePrevious";
 import useTitle from "./useTitle";
 import useRefUnmounted from "./useRefUnmounted";
 import useToggle from "./useToggle";
+import useLifeCycles from "./useLifeCycles";
 
 export {
   useRefUnmounted,
@@ -19,5 +20,6 @@ export {
   useUpdate,
   useSession,
   usePromise,
-  useToggle
+  useToggle,
+  useLifeCycles
 };
