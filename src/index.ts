@@ -9,6 +9,7 @@ import useTitle from "./useTitle";
 import useRefUnmounted from "./useRefUnmounted";
 import useToggle from "./useToggle";
 import useLifeCycles from "./useLifeCycles";
+import useGesture from "./useGesture";
 import useDraggable from "./useDraggable";
 
 export {
@@ -23,5 +24,6 @@ export {
   usePromise,
   useToggle,
   useLifeCycles,
-  useDraggable
+  useDraggable,
+  useGesture
 };
