@@ -13,7 +13,9 @@
     "build": "rm -rf dist && tsc -b tsconfig-build.json && cp package.json dist && cp README.md dist",
     "pub": "npm run build && cd dist && npm publish",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "doc:dev": "docz dev",
+    "doc:build": "docz build"
   },
   "husky": {
     "hooks": {
@@ -52,8 +54,8 @@
     "@types/react": "^16.8.7",
     "@types/react-dom": "^16.8.2",
     "babel-jest": "^24.4.0",
-    "docz": "^0.13.5",
-    "docz-theme-default": "^0.13.5",
+    "docz": "^1.0.0-rc.3",
+    "docz-theme-default": "^1.0.0-rc.3",
     "husky": "^1.2.1",
     "jest": "^24.4.0",
     "prettier": "^1.15.3",
