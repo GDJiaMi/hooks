@@ -1,6 +1,10 @@
 import { RefObject, useEffect, useState } from "react";
-import useGesture from "./useGesture";
+import useGesture, {
+  GestureCoordinate,
+  GestureMoveCoordinate
+} from "./useGesture";
 import useRefProps from "./useRefProps";
+import useSideEffectState from "./useSideEffectState";
 
 export interface Coordinate {
   x: number;
@@ -28,6 +32,14 @@ export interface useDraggableOptions<T extends HTMLElement> {
    * 可以是selector 或者是'parent'
    */
   bounds?: Bounds | string;
+  /**
+   * 停靠边缘
+   */
+  edge?: boolean;
+  edgePadding?: number;
+  onDown?: (pos: GestureCoordinate) => false | void;
+  onMove?: (pos: GestureMoveCoordinate, offset: Coordinate) => false | void;
+  onUp?: (pos: GestureCoordinate, offset: Coordinate) => void;
   ref?: RefObject<T>;
 }
 
@@ -87,41 +99,108 @@ function restrictInBounds(
   };
 }
 
+/**
+ * 停靠边缘
+ */
+function berthEdge(
+  offset: Coordinate,
+  el: HTMLElement,
+  bounds: Bounds | string = "body",
+  padding: number = 0
+): Coordinate {
+  const elRect = el.getBoundingClientRect() as Bounds;
+  let boundRect: Bounds;
+
+  if (typeof bounds === "string") {
+    let boundEl =
+      bounds === "parent" ? el.parentElement : document.querySelector(bounds);
+    if (boundEl == null || !(boundEl instanceof HTMLElement)) {
+      throw Error(
+        'Bounds selector "' + bounds + '" could not find an element.'
+      );
+    }
+    boundRect = boundEl.getBoundingClientRect() as Bounds;
+  } else {
+    boundRect = bounds;
+  }
+
+  let x: number =
+    elRect.x - boundRect.x > boundRect.width / 2
+      ? boundRect.width - (elRect.width + padding) // right berth
+      : padding;
+  return {
+    x,
+    y: offset.y
+  };
+}
+
 const DEFAULT_TRANSLATE = { x: 0, y: 0 };
 
 /**
  * 给指定element注入可拖拽行为
- * TODO: 抽取为draggle core. 扩展其他hook. 如限定拖拽方式, 拖拽区域, 自动吸附
- * @param ref 指定element ref. ref应该是静态元素, 即始终指向同一个元素
+ * TODO: 集成spring
+ * TODO: 处理bounds大小变动
  */
 export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
   options: useDraggableOptions<T> = {}
 ) {
   const [dragging, setDragging] = useState(false);
-  const [offset, setOffset] = useState(
+  const [offset, setOffset, getOffset] = useSideEffectState(
     options.defaultTranslate || DEFAULT_TRANSLATE
   );
-  const { x, y } = offset;
   const optionsRef = useRefProps(options);
+  const { x, y } = offset;
 
   const el = useGesture({
-    onDown: () => {
+    onDown: info => {
+      if (
+        optionsRef.current.onDown &&
+        optionsRef.current.onDown(info) === false
+      ) {
+        return false;
+      }
+
       setDragging(true);
+      return;
     },
     onMove: info => {
       const axis = optionsRef.current.axis;
       const { x: deltaX, y: deltaY } = restrictInBounds(
         { x: info.deltaX, y: info.deltaY },
         info.target,
-        optionsRef.current.bounds
+        optionsRef.current.bounds ||
+          (optionsRef.current.edge ? "body" : undefined)
       );
-
-      setOffset(offset => ({
+      const offset = getOffset();
+      const newOffset = {
         x: axis === "y" ? offset.x : deltaX + offset.x,
         y: axis === "x" ? offset.y : deltaY + offset.y
-      }));
+      };
+
+      if (
+        optionsRef.current.onMove &&
+        optionsRef.current.onMove(info, offset) === false
+      ) {
+        return false;
+      }
+
+      setOffset(newOffset);
+      return;
     },
-    onUp: () => {
+    onUp: info => {
+      let offset = getOffset();
+      if (optionsRef.current.edge) {
+        offset = berthEdge(
+          offset,
+          info.target,
+          optionsRef.current.bounds,
+          optionsRef.current.edgePadding
+        );
+        setOffset(offset);
+      }
+      if (optionsRef.current.onUp) {
+        optionsRef.current.onUp(info, offset);
+      }
       setDragging(false);
     },
     ref: options.ref

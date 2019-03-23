@@ -4,6 +4,7 @@ import { useDraggable } from "../src";
 export const Example = () => {
   const { ref } = useDraggable<HTMLDivElement>({
     bounds: "parent",
+    edge: true,
     defaultTranslate: { x: 10, y: 10 }
   });
 

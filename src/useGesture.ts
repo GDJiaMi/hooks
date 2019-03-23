@@ -11,11 +11,11 @@ export interface GestureCoordinate extends Coord {
   // 事件时间戳
   timestamp: number;
   target: HTMLElement;
+  start?: GestureCoordinate;
+  previous?: GestureCoordinate;
 }
 
 export interface GestureMoveCoordinate extends GestureCoordinate {
-  start: GestureCoordinate;
-  previous: GestureCoordinate;
   // 相比较上次移动的位置偏移
   deltaX: number;
   deltaY: number;
@@ -119,7 +119,13 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
         }
 
         const pos = extraPosition(event)!;
-        const coord = { ...pos, timestamp: Date.now(), target: el.current! };
+        const coord = {
+          ...pos,
+          timestamp: Date.now(),
+          target: el.current!,
+          start: state.start,
+          last: state.last
+        };
         updateState({ interacting: false });
         if (options.onUp) {
           options.onUp(coord);
