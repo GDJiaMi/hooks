@@ -10,6 +10,7 @@ import useInstance from "src/useInstance";
 export interface GestureCoordinate extends Coord {
   // 事件时间戳
   timestamp: number;
+  target: HTMLElement;
 }
 
 export interface GestureMoveCoordinate extends GestureCoordinate {
@@ -58,7 +59,7 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
         return;
       }
 
-      const coord = { ...pos, timestamp: Date.now() };
+      const coord = { ...pos, timestamp: Date.now(), target: el.current! };
 
       if (options.onDown != null && options.onDown(coord) === false) {
         // prevented
@@ -101,7 +102,8 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
           distanceX,
           distanceY,
           distance,
-          velocity: delta / (timestamp - last.timestamp)
+          velocity: delta / (timestamp - last.timestamp),
+          target: el.current!
         };
 
         if (options.onMove != null && options.onMove(coord) === false) {
@@ -117,7 +119,7 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
         }
 
         const pos = extraPosition(event)!;
-        const coord = { ...pos, timestamp: Date.now() };
+        const coord = { ...pos, timestamp: Date.now(), target: el.current! };
         updateState({ interacting: false });
         if (options.onUp) {
           options.onUp(coord);
