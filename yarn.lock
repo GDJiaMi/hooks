@@ -8331,6 +8331,13 @@ react-perfect-scrollbar@^1.4.4:
     perfect-scrollbar "^1.4.0"
     prop-types "^15.6.1"
 
+react-spring@^8.0.18:
+  version "8.0.18"
+  resolved "http://registry.npm.taobao.org/react-spring/download/react-spring-8.0.18.tgz#f6fa09ab5acdeb37618c0e340d59830171b95c33"
+  integrity sha1-9voJq1rN6zdhjA40DVmDAXG5XDM=
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+
 react-testing-library@^6.0.0:
   version "6.0.0"
   resolved "http://registry.npm.taobao.org/react-testing-library/download/react-testing-library-6.0.0.tgz#81edfcfae8a795525f48685be9bf561df45bb35d"

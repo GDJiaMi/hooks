@@ -67,3 +67,17 @@ export function extraPosition(
     id: touch.identifier
   };
 }
+
+export function clamp(num: number, lower: number, upper: number) {
+  if (num === num) {
+    if (upper !== undefined) {
+      num = num <= upper ? num : upper;
+    }
+
+    if (lower !== undefined) {
+      num = num >= lower ? num : lower;
+    }
+  }
+
+  return num;
+}

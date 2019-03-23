@@ -40,6 +40,7 @@ export interface useDraggableOptions<T extends HTMLElement> {
   onDown?: (pos: GestureCoordinate) => false | void;
   onMove?: (pos: GestureMoveCoordinate, offset: Coordinate) => false | void;
   onUp?: (pos: GestureCoordinate, offset: Coordinate) => void;
+  disableTransform?: boolean;
   ref?: RefObject<T>;
 }
 
@@ -208,7 +209,9 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
 
   useEffect(
     () => {
-      el.current!.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      if (!optionsRef.current.disableTransform) {
+        el.current!.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      }
     },
     [x, y]
   );

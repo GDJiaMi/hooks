@@ -63,6 +63,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-hooks-testing-library": "^0.3.6",
+    "react-spring": "^8.0.18",
     "tslib": "^1.9.3",
     "typescript": "^3.3.3333"
   },
