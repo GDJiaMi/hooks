@@ -147,7 +147,7 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
           return
         }
 
-        const pos = extraPosition(event)!
+        const pos = extraPosition(event, state.start && state.start.id)!
         const coord = {
           ...state.last!,
           ...pos,
