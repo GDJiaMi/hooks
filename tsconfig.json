@@ -7,7 +7,6 @@
     "allowJs": false,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
     "importHelpers": true,
