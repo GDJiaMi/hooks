@@ -1,8 +1,5 @@
 import { RefObject, useEffect, useState } from "react";
-import useGesture, {
-  GestureCoordinate,
-  GestureMoveCoordinate
-} from "./useGesture";
+import useGesture, { GestureCoordinate } from "./useGesture";
 import useRefProps from "./useRefProps";
 import useSideEffectState from "./useSideEffectState";
 
@@ -38,7 +35,7 @@ export interface useDraggableOptions<T extends HTMLElement> {
   edge?: boolean;
   edgePadding?: number;
   onDown?: (pos: GestureCoordinate) => false | void;
-  onMove?: (pos: GestureMoveCoordinate, offset: Coordinate) => false | void;
+  onMove?: (pos: GestureCoordinate, offset: Coordinate) => false | void;
   onUp?: (pos: GestureCoordinate, offset: Coordinate) => void;
   disableTransform?: boolean;
   ref?: RefObject<T>;

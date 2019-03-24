@@ -13,9 +13,6 @@ export interface GestureCoordinate extends Coord {
   target: HTMLElement;
   start?: GestureCoordinate;
   previous?: GestureCoordinate;
-}
-
-export interface GestureMoveCoordinate extends GestureCoordinate {
   // 相比较上次移动的位置偏移
   deltaX: number;
   deltaY: number;
@@ -28,10 +25,17 @@ export interface GestureMoveCoordinate extends GestureCoordinate {
   velocity: number;
 }
 
+export interface GestureAction {
+  down: boolean;
+  first: boolean;
+  coordinate: GestureCoordinate;
+}
+
 export interface GestureOptions<T extends HTMLElement> {
   onDown?: (info: GestureCoordinate) => false | void;
-  onMove?: (info: GestureMoveCoordinate) => false | void;
+  onMove?: (info: GestureCoordinate) => false | void;
   onUp?: (info: GestureCoordinate) => void;
+  onAction?: (info: GestureAction) => void;
   ref?: RefObject<T>;
 }
 
@@ -59,7 +63,18 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
         return;
       }
 
-      const coord = { ...pos, timestamp: Date.now(), target: el.current! };
+      const coord: GestureCoordinate = {
+        ...pos,
+        timestamp: Date.now(),
+        target: el.current!,
+        delta: 0,
+        deltaX: 0,
+        deltaY: 0,
+        distance: 0,
+        distanceX: 0,
+        distanceY: 0,
+        velocity: 0
+      };
 
       if (options.onDown != null && options.onDown(coord) === false) {
         // prevented
@@ -69,8 +84,15 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
       event.stopPropagation();
       event.preventDefault();
 
+      if (options.onAction) {
+        options.onAction({ down: true, first: true, coordinate: coord });
+      }
+
       updateState({ start: coord, last: coord, interacting: true });
 
+      /**
+       * 处理移动
+       */
       const handleActionMove = (event: GestureEvent) => {
         if (!isMouseEvent(event)) {
           event.preventDefault();
@@ -91,7 +113,7 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
         const distance = Math.sqrt(distanceX ** 2 + distanceY ** 2);
         const timestamp = Date.now();
 
-        const coord: GestureMoveCoordinate = {
+        const coord: GestureCoordinate = {
           ...pos,
           start: start,
           previous: last,
@@ -110,9 +132,16 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
           return;
         }
 
+        if (options.onAction) {
+          options.onAction({ down: true, first: false, coordinate: coord });
+        }
+
         updateState({ last: coord });
       };
 
+      /**
+       * 动作结束
+       */
       const handleActionEnd = (event: GestureEvent) => {
         if (!state.interacting) {
           return;
@@ -120,6 +149,7 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
 
         const pos = extraPosition(event)!;
         const coord = {
+          ...state.last!,
           ...pos,
           timestamp: Date.now(),
           target: el.current!,
@@ -129,6 +159,9 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
         updateState({ interacting: false });
         if (options.onUp) {
           options.onUp(coord);
+        }
+        if (options.onAction) {
+          options.onAction({ down: false, first: false, coordinate: coord });
         }
       };
 
