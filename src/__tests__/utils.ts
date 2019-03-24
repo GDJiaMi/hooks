@@ -1,4 +1,4 @@
-import { isMouseEvent, extraPosition } from '../utils'
+import { isMouseEvent, extraPosition, pickProperties } from '../utils'
 
 it('test isMouseEvent', () => {
   expect(isMouseEvent(new MouseEvent('mousedown'))).toBeTruthy()
@@ -6,41 +6,70 @@ it('test isMouseEvent', () => {
   expect(isMouseEvent(new TouchEvent('touchstart'))).toBeFalsy()
 })
 
-it('test extraPosition', () => {
-  const mouseEvent = new MouseEvent('mousedown', { clientX: 10, clientY: 20 })
-  expect(extraPosition(mouseEvent)).toEqual({ x: 10, y: 20 })
+it('test pickProperties', () => {
+  const obj = {
+    a: 1,
+    b: '12',
+    c: true,
+  }
+  expect(pickProperties(obj, ['a', 'c'])).toEqual({ a: 1, c: true })
+})
 
-  const target: any = {}
+function createPosition() {
+  const num = () => Math.round(Math.random() * 100)
+  const pos = {
+    clientX: num(),
+    clientY: num(),
+    pageX: num(),
+    pageY: num(),
+    screenX: num(),
+    screenY: num(),
+  }
+  return pos
+}
+
+function createEvent(type: string) {
+  const pos = createPosition()
+  return [
+    {
+      type,
+      ...pos,
+    },
+    pos,
+  ]
+}
+
+it('test extraPosition', () => {
+  let [mouseevent, pos] = createEvent('mousedown')
+  expect(extraPosition(mouseevent as MouseEvent)).toEqual(pos)
+
+  pos = createPosition()
   const touchEvent = new TouchEvent('touchstart', {
     targetTouches: [
       {
-        target,
         identifier: 0,
-        pageX: 10,
-        pageY: 20,
+        ...pos,
       } as Touch,
     ],
   })
 
-  expect(extraPosition(touchEvent)).toEqual({ x: 10, y: 20, id: 0 })
+  expect(extraPosition(touchEvent)).toEqual({ ...pos, id: 0 })
 
+  const pos2 = createPosition()
+  const pos3 = createPosition()
   const touchMoveEvent = new TouchEvent('touchstart', {
     touches: [
       {
-        target,
         identifier: 0,
-        pageX: 10,
-        pageY: 20,
+        ...pos2,
       } as Touch,
       {
-        target,
         identifier: 2,
-        pageX: 30,
-        pageY: 27,
+        ...pos3,
       } as Touch,
     ],
   })
 
   expect(extraPosition(touchMoveEvent, 1)).toBeFalsy()
-  expect(extraPosition(touchMoveEvent, 2)).toEqual({ x: 30, y: 27, id: 2 })
+  expect(extraPosition(touchMoveEvent, 2)).toEqual({ ...pos3, id: 2 })
 })

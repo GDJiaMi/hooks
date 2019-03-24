@@ -27,7 +27,7 @@ export function isMouseEvent(evt: MouseEvent | TouchEvent): evt is MouseEvent {
   return false
 }
 
-export function extraProperties(obj: object, keys: string[]): object {
+export function pickProperties(obj: object, keys: string[]): object {
   const newobj = {}
   for (let key of keys) {
     newobj[key] = obj[key]
@@ -44,7 +44,7 @@ export function extraPosition(
   id?: number,
 ): GestureCoordinate | undefined {
   if (isMouseEvent(evt)) {
-    return extraProperties(evt, GestureCoordinateKeys) as GestureCoordinate
+    return pickProperties(evt, GestureCoordinateKeys) as GestureCoordinate
   }
 
   let touch: Touch | undefined
@@ -63,7 +63,7 @@ export function extraPosition(
   }
 
   return {
-    ...(extraProperties(touch, GestureCoordinateKeys) as GestureCoordinate),
+    ...(pickProperties(touch, GestureCoordinateKeys) as GestureCoordinate),
     id: touch.identifier,
   }
 }
