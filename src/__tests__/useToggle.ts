@@ -1,5 +1,5 @@
 import { renderHook, cleanup, act } from 'react-hooks-testing-library'
-import { useToggle, useSideEffectState, useSession } from '../index'
+import { useToggle, useRefState, useSession } from '../index'
 
 beforeEach(cleanup)
 
@@ -19,8 +19,8 @@ it('test useToggle', () => {
   expect(result.current[0]).toBeTruthy()
 })
 
-it('test useToggle with useSideEffectState', () => {
-  const { result } = renderHook(() => useToggle(true, useSideEffectState))
+it('test useToggle with useRefState', () => {
+  const { result } = renderHook(() => useToggle(true, useRefState))
   expect(result.current[0]).toBeTruthy()
   act(() => {
     result.current[1]()

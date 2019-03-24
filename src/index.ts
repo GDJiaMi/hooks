@@ -1,5 +1,5 @@
 import useAsyncOnMount from './useAsyncOnMount'
-import useSideEffectState from './useSideEffectState'
+import useRefState from './useRefState'
 import useUpdate from './useUpdate'
 import useSession from './useSession'
 import usePromise from './usePromise'
@@ -18,7 +18,7 @@ export {
   usePrevious,
   useInput,
   useAsyncOnMount,
-  useSideEffectState,
+  useRefState,
   useUpdate,
   useSession,
   usePromise,

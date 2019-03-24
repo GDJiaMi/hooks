@@ -4,8 +4,8 @@ import {
   TOUCH_SUPPROTED,
   extraPosition,
   isMouseEvent,
-} from 'src/utils'
-import useInstance from 'src/useInstance'
+} from './utils'
+import useInstance from './useInstance'
 
 export interface GestureCoordinate extends Coord {
   // 事件时间戳

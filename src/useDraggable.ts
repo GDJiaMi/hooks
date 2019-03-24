@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useState, useCallback } from 'react'
 import useGesture, { GestureCoordinate } from './useGesture'
 import useRefProps from './useRefProps'
-import useSideEffectState from './useSideEffectState'
+import useRefState from './useRefState'
 
 export interface Coordinate {
   x: number
@@ -137,7 +137,7 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
   options: useDraggableOptions<T> = {},
 ) {
   const [dragging, setDragging] = useState(false)
-  const [offset, setOffset, getOffset] = useSideEffectState(
+  const [offset, setOffset, offsetRef] = useRefState(
     options.defaultTranslate || DEFAULT_TRANSLATE,
   )
   const optionsRef = useRefProps(options)
@@ -163,7 +163,7 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
         optionsRef.current.bounds ||
           (optionsRef.current.edge ? 'body' : undefined),
       )
-      const offset = getOffset()
+      const offset = offsetRef.current
       const newOffset = {
         x: axis === 'y' ? offset.x : deltaX + offset.x,
         y: axis === 'x' ? offset.y : deltaY + offset.y,
@@ -181,7 +181,7 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
     },
     onUp: info => {
       setDragging(false)
-      let offset = getOffset()
+      let offset = offsetRef.current
       if (optionsRef.current.edge) {
         offset = berthEdge(
           offset,
@@ -208,7 +208,7 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
         (optionsRef.current.edge ? 'body' : undefined),
     )
 
-    let offset = getOffset()
+    let offset = offsetRef.current
     offset = {
       x: x + offset.x,
       y: y + offset.y,
