@@ -68,6 +68,29 @@ export function extraPosition(
   }
 }
 
+/**
+ * 获取多点触摸
+ */
+export function extraPositions(
+  evt: MouseEvent | TouchEvent,
+): GestureCoordinate[] {
+  if (isMouseEvent(evt)) {
+    return [
+      {
+        id: 0,
+        ...(pickProperties(evt, GestureCoordinateKeys) as GestureCoordinate),
+      },
+    ]
+  }
+
+  return Array.prototype.map.call(evt.changedTouches, (touch: Touch) => {
+    return {
+      id: touch.identifier,
+      ...pickProperties(touch, GestureCoordinateKeys),
+    }
+  })
+}
+
 export function clamp(num: number, lower: number, upper: number) {
   if (num === num) {
     if (upper !== undefined) {
