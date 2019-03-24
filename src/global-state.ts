@@ -1,1 +1,1 @@
-export * from "react-hooks-global-state";
+export * from 'react-hooks-global-state'

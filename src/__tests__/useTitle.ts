@@ -1,17 +1,17 @@
-import { renderHook, cleanup } from "react-hooks-testing-library";
-import { useTitle } from "../index";
+import { renderHook, cleanup } from 'react-hooks-testing-library'
+import { useTitle } from '../index'
 
-beforeEach(cleanup);
+beforeEach(cleanup)
 
-it("test useTitle", () => {
+it('test useTitle', () => {
   const { rerender } = renderHook(
     ({ title }: { title: string }) => useTitle(title),
-    { initialProps: { title: "hello" } }
-  );
+    { initialProps: { title: 'hello' } },
+  )
 
-  expect(document.title).toBe("hello");
+  expect(document.title).toBe('hello')
 
-  rerender({ title: "world" });
+  rerender({ title: 'world' })
 
-  expect(document.title).toBe("world");
-});
+  expect(document.title).toBe('world')
+})

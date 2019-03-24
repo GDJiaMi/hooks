@@ -1,23 +1,23 @@
-import { renderHook, cleanup } from "react-hooks-testing-library";
-import { usePrevious } from "../index";
+import { renderHook, cleanup } from 'react-hooks-testing-library'
+import { usePrevious } from '../index'
 
-afterEach(cleanup);
+afterEach(cleanup)
 
-it("test usePrevious", () => {
+it('test usePrevious', () => {
   const { result, rerender } = renderHook(
     (props: { prop: string }) => usePrevious(props.prop),
     {
-      initialProps: { prop: "hello" }
-    }
-  );
+      initialProps: { prop: 'hello' },
+    },
+  )
 
-  expect(result.current).toBeUndefined();
+  expect(result.current).toBeUndefined()
 
-  rerender({ prop: "world" });
+  rerender({ prop: 'world' })
 
-  expect(result.current).toBe("hello");
+  expect(result.current).toBe('hello')
 
-  rerender();
+  rerender()
 
-  expect(result.current).toBe("world");
-});
+  expect(result.current).toBe('world')
+})

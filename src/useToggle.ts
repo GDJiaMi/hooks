@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react'
 
 /**
  * 提供开关属性
@@ -7,19 +7,19 @@ import { useState, useCallback } from "react";
 export default function useToggle(
   defaultValue?: boolean,
   adapter: (
-    defaultValue?: boolean
+    defaultValue?: boolean,
   ) => [
     boolean | undefined,
     (cb: (value: boolean | undefined) => boolean) => void,
     ...any[]
-  ] = useState
+  ] = useState,
 ): [boolean | undefined, () => void] {
-  const [value, setValue] = adapter(defaultValue);
+  const [value, setValue] = adapter(defaultValue)
 
   return [
     value,
     useCallback(() => {
-      setValue(v => !v);
-    }, [])
-  ];
+      setValue(v => !v)
+    }, []),
+  ]
 }

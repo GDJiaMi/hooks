@@ -1,14 +1,14 @@
-import { renderHook, cleanup } from "react-hooks-testing-library";
-import { useRefUnmounted } from "../index";
+import { renderHook, cleanup } from 'react-hooks-testing-library'
+import { useRefUnmounted } from '../index'
 
-beforeEach(cleanup);
+beforeEach(cleanup)
 
-it("test useRefUnmounted", () => {
-  const { result, unmount } = renderHook(() => useRefUnmounted());
+it('test useRefUnmounted', () => {
+  const { result, unmount } = renderHook(() => useRefUnmounted())
 
-  expect(result.current.current).toBeFalsy();
+  expect(result.current.current).toBeFalsy()
 
-  unmount();
+  unmount()
 
-  expect(result.current.current).toBeTruthy();
-});
+  expect(result.current.current).toBeTruthy()
+})

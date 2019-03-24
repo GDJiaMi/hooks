@@ -1,11 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react'
 
 /**
  * 强制刷新
  */
 export default function useUpdate() {
-  const [, setValue] = useState(0);
+  const [, setValue] = useState(0)
   return useCallback(() => {
-    setValue(val => val % (Number.MAX_SAFE_INTEGER - 1));
-  }, []);
+    setValue(val => val % (Number.MAX_SAFE_INTEGER - 1))
+  }, [])
 }

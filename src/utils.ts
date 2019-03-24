@@ -1,38 +1,38 @@
 export interface GestureCoordinate {
-  clientX: number;
-  clientY: number;
-  pageX: number;
-  pageY: number;
-  screenX: number;
-  screenY: number;
+  clientX: number
+  clientY: number
+  pageX: number
+  pageY: number
+  screenX: number
+  screenY: number
   // touch identifier
-  id?: number;
+  id?: number
 }
 
-export const TOUCH_SUPPROTED = "TouchEvent" in window;
+export const TOUCH_SUPPROTED = 'TouchEvent' in window
 export const GestureCoordinateKeys = [
-  "clientX",
-  "clientY",
-  "pageX",
-  "pageY",
-  "screenX",
-  "screenY"
-];
+  'clientX',
+  'clientY',
+  'pageX',
+  'pageY',
+  'screenX',
+  'screenY',
+]
 
 export function isMouseEvent(evt: MouseEvent | TouchEvent): evt is MouseEvent {
-  if (evt.type.startsWith("mouse")) {
-    return true;
+  if (evt.type.startsWith('mouse')) {
+    return true
   }
 
-  return false;
+  return false
 }
 
 export function extraProperties(obj: object, keys: string[]): object {
-  const newobj = {};
+  const newobj = {}
   for (let key of keys) {
-    newobj[key] = obj[key];
+    newobj[key] = obj[key]
   }
-  return newobj;
+  return newobj
 }
 
 /**
@@ -41,43 +41,43 @@ export function extraProperties(obj: object, keys: string[]): object {
  */
 export function extraPosition(
   evt: MouseEvent | TouchEvent,
-  id?: number
+  id?: number,
 ): GestureCoordinate | undefined {
   if (isMouseEvent(evt)) {
-    return extraProperties(evt, GestureCoordinateKeys) as GestureCoordinate;
+    return extraProperties(evt, GestureCoordinateKeys) as GestureCoordinate
   }
 
-  let touch: Touch | undefined;
+  let touch: Touch | undefined
   if (id) {
     for (let i = 0; i < evt.touches.length; i++) {
       if (evt.touches[i].identifier === id) {
-        touch = evt.touches[i];
-        break;
+        touch = evt.touches[i]
+        break
       }
     }
     if (touch == null) {
-      return;
+      return
     }
   } else {
-    touch = evt.targetTouches[0];
+    touch = evt.targetTouches[0]
   }
 
   return {
     ...(extraProperties(touch, GestureCoordinateKeys) as GestureCoordinate),
-    id: touch.identifier
-  };
+    id: touch.identifier,
+  }
 }
 
 export function clamp(num: number, lower: number, upper: number) {
   if (num === num) {
     if (upper !== undefined) {
-      num = num <= upper ? num : upper;
+      num = num <= upper ? num : upper
     }
 
     if (lower !== undefined) {
-      num = num >= lower ? num : lower;
+      num = num >= lower ? num : lower
     }
   }
 
-  return num;
+  return num
 }

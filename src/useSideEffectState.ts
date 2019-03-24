@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction, useRef, useCallback } from "react";
+import { useState, Dispatch, SetStateAction, useRef, useCallback } from 'react'
 
 /**
  * 扩展useState，新增了getValue作为第三个参数，可以用于在被缓存的callback中获取到最新的值
@@ -7,34 +7,34 @@ import { useState, Dispatch, SetStateAction, useRef, useCallback } from "react";
  * 状态，就会导致问题，它会缓存会回调创建时的环境。也就是依赖的外部变量是旧的
  */
 export default function useSideEffectState<S>(
-  initialState: S | (() => S)
+  initialState: S | (() => S),
 ): [S, Dispatch<SetStateAction<S>>, () => S] {
-  const ins = useRef<{ state: S }>();
+  const ins = useRef<{ state: S }>()
   const [state, setState] = useState<S>(() => {
     const value =
-      typeof initialState === "function"
+      typeof initialState === 'function'
         ? (initialState as () => S)()
-        : initialState;
-    ins.current = { state: value };
-    return value;
-  });
+        : initialState
+    ins.current = { state: value }
+    return value
+  })
 
   const getValue = useCallback(() => {
-    return ins.current!.state;
-  }, []);
+    return ins.current!.state
+  }, [])
 
   const setValue = useCallback((value: SetStateAction<S>) => {
-    if (typeof value === "function") {
+    if (typeof value === 'function') {
       setState(prevState => {
-        const finalValue = (value as ((prevState: S) => S))(prevState);
-        ins.current!.state = finalValue;
-        return finalValue;
-      });
+        const finalValue = (value as ((prevState: S) => S))(prevState)
+        ins.current!.state = finalValue
+        return finalValue
+      })
     } else {
-      ins.current!.state = value;
-      setState(value);
+      ins.current!.state = value
+      setState(value)
     }
-  }, []);
+  }, [])
 
-  return [state, setValue, getValue];
+  return [state, setValue, getValue]
 }
