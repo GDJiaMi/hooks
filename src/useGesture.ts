@@ -6,6 +6,7 @@ import {
   isMouseEvent,
 } from './utils'
 import useInstance from './useInstance'
+import useRefState from './useRefState'
 
 export interface GestureCoordinate extends Coord {
   // 事件时间戳
@@ -50,14 +51,15 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
   options: GestureOptions<T>,
 ) {
   const el = options.ref || (useRef<T>() as RefObject<T>)
+  const [interacting, setInteracting, refInteracting] = useRefState(false)
   const [state, updateState] = useInstance<{
     start?: GestureCoordinate
-    interacting?: boolean
     last?: GestureCoordinate
   }>({})
 
   useEffect(() => {
     const handleActionStart = (event: GestureEvent) => {
+      console.log('touch start', event)
       const pos = extraPosition(event)
       if (pos == null) {
         return
@@ -88,7 +90,8 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
         options.onAction({ down: true, first: true, coordinate: coord })
       }
 
-      updateState({ start: coord, last: coord, interacting: true })
+      updateState({ start: coord, last: coord })
+      setInteracting(true)
 
       /**
        * 处理移动
@@ -143,7 +146,7 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
        * 动作结束
        */
       const handleActionEnd = (event: GestureEvent) => {
-        if (!state.interacting) {
+        if (!refInteracting.current) {
           return
         }
 
@@ -156,7 +159,7 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
           start: state.start,
           last: state.last,
         }
-        updateState({ interacting: false })
+        setInteracting(false)
         if (options.onUp) {
           options.onUp(coord)
         }
@@ -194,5 +197,5 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
     }
   }, [])
 
-  return el
+  return { ref: el, interacting }
 }

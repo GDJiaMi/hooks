@@ -143,7 +143,7 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
   const optionsRef = useRefProps(options)
   const { x, y } = offset
 
-  const el = useGesture({
+  const { ref: el } = useGesture({
     onDown: info => {
       if (
         optionsRef.current.onDown &&

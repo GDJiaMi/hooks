@@ -5,7 +5,7 @@ import { clamp } from '../src/utils'
 
 export const Example = () => {
   const [{ xy }, set] = useSpring(() => ({ xy: [0, 0] }))
-  const el = useGesture({
+  const { ref } = useGesture({
     onAction: ({ down, coordinate: { velocity, distanceX, distanceY } }) => {
       velocity = clamp(velocity, 1, 8)
       set({
@@ -17,7 +17,7 @@ export const Example = () => {
 
   return (
     <animated.div
-      ref={el}
+      ref={ref}
       style={{
         border: '1px solid gray',
         width: 100,
