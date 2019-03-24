@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from 'react'
+import { RefObject, useEffect, useState, useCallback } from 'react'
 import useGesture, { GestureCoordinate } from './useGesture'
 import useRefProps from './useRefProps'
 import useSideEffectState from './useSideEffectState'
@@ -132,8 +132,6 @@ const DEFAULT_TRANSLATE = { x: 0, y: 0 }
 
 /**
  * 给指定element注入可拖拽行为
- * TODO: 集成spring
- * TODO: 处理bounds大小变动
  */
 export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
   options: useDraggableOptions<T> = {},
@@ -182,6 +180,7 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
       return
     },
     onUp: info => {
+      setDragging(false)
       let offset = getOffset()
       if (optionsRef.current.edge) {
         offset = berthEdge(
@@ -190,15 +189,45 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
           optionsRef.current.bounds,
           optionsRef.current.edgePadding,
         )
-        setOffset(offset)
+        requestAnimationFrame(() => {
+          setOffset(offset)
+        })
       }
       if (optionsRef.current.onUp) {
         optionsRef.current.onUp(info, offset)
       }
-      setDragging(false)
     },
     ref: options.ref,
   })
+
+  const resetOffset = useCallback(() => {
+    const { x, y } = restrictInBounds(
+      optionsRef.current.defaultTranslate || DEFAULT_TRANSLATE,
+      el.current!,
+      optionsRef.current.bounds ||
+        (optionsRef.current.edge ? 'body' : undefined),
+    )
+
+    let offset = getOffset()
+    offset = {
+      x: x + offset.x,
+      y: y + offset.y,
+    }
+
+    if (optionsRef.current.edge) {
+      offset = berthEdge(
+        offset,
+        el.current!,
+        optionsRef.current.bounds,
+        optionsRef.current.edgePadding,
+      )
+    }
+    setOffset(offset)
+  }, [])
+
+  useEffect(() => {
+    resetOffset()
+  }, [])
 
   useEffect(
     () => {
@@ -209,5 +238,5 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
     [x, y],
   )
 
-  return { ref: el, dragging, translate: offset }
+  return { ref: el, dragging, translate: offset, resetOffset }
 }
