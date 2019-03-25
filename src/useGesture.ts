@@ -34,7 +34,7 @@ export interface GestureAction {
 
 export interface GestureOptions<T extends HTMLElement> {
   onDown?: (info: GestureCoordinate) => false | void
-  onMove?: (info: GestureCoordinate) => false | void
+  onMove?: (info: GestureCoordinate) => void
   onUp?: (info: GestureCoordinate) => void
   onAction?: (info: GestureAction) => void
   ref?: RefObject<T>
@@ -131,8 +131,8 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
           target: el.current!,
         }
 
-        if (options.onMove != null && options.onMove(coord) === false) {
-          return
+        if (options.onMove) {
+          options.onMove(coord)
         }
 
         if (options.onAction) {

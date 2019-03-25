@@ -35,7 +35,7 @@ export interface useDraggableOptions<T extends HTMLElement> {
   edge?: boolean
   edgePadding?: number
   onDown?: (pos: GestureCoordinate) => false | void
-  onMove?: (pos: GestureCoordinate, offset: Coordinate) => false | void
+  onMove?: (pos: GestureCoordinate, offset: Coordinate) => void
   onUp?: (pos: GestureCoordinate, offset: Coordinate) => void
   disableTransform?: boolean
   ref?: RefObject<T>
@@ -169,11 +169,8 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
         y: axis === 'x' ? offset.y : deltaY + offset.y,
       }
 
-      if (
-        optionsRef.current.onMove &&
-        optionsRef.current.onMove(info, offset) === false
-      ) {
-        return false
+      if (optionsRef.current.onMove) {
+        optionsRef.current.onMove(info, offset)
       }
 
       setOffset(newOffset)

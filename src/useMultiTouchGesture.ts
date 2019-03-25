@@ -4,6 +4,8 @@ import useInstance from './useInstance'
 import { GestureCoordinate, GestureEvent } from './useGesture'
 import useRefState from './useRefState'
 
+export { GestureCoordinate, GestureEvent }
+
 export interface MultiTouchGesture {
   // 当前有效的触摸点
   touches: GestureCoordinate[]
@@ -13,7 +15,7 @@ export interface MultiTouchGesture {
 
 export interface GestureOptions<T extends HTMLElement> {
   onDown?: (info: MultiTouchGesture) => false | void
-  onMove?: (info: MultiTouchGesture) => false | void
+  onMove?: (info: MultiTouchGesture) => void
   onUp?: (info: MultiTouchGesture) => void
   onAction?: (info: GestureCoordinate[]) => void
   ref?: RefObject<T>
@@ -21,6 +23,7 @@ export interface GestureOptions<T extends HTMLElement> {
 
 /**
  * 获取抽象化的mouse/touch事件. 支持多点触摸
+ * TODO: 可配mouse
  * TODO: pasive
  * TODO: 过滤
  * @param options
@@ -61,7 +64,10 @@ export default function useMultiTouchGesture<
 
       if (
         options.onDown != null &&
-        options.onDown({ touches: getTouches(), changedTouches }) === false
+        options.onDown({
+          touches: getTouches().concat(changedTouches),
+          changedTouches,
+        }) === false
       ) {
         // prevented
         return
@@ -106,7 +112,7 @@ export default function useMultiTouchGesture<
             }
 
             const start = savedTouch.start!
-            const last = savedTouch.previous!
+            const last = savedTouch!
             const deltaX = pos.pageX - last.pageX
             const deltaY = pos.pageY - last.pageY
             const delta = Math.sqrt(deltaX ** 2 + deltaY ** 2)
@@ -132,19 +138,16 @@ export default function useMultiTouchGesture<
           })
           .filter((i): i is GestureCoordinate => !!i)
 
-        if (
-          options.onMove != null &&
-          options.onMove({
-            changedTouches: changedTouches,
-            touches: getTouches(),
-          }) === false
-        ) {
-          return
-        }
-
         changedTouches.forEach(touch => {
           state.touches.set(touch.id!, touch)
         })
+
+        if (options.onMove) {
+          options.onMove({
+            changedTouches: changedTouches,
+            touches: getTouches(),
+          })
+        }
 
         if (options.onAction) {
           options.onAction(getTouches())
