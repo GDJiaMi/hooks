@@ -6,4 +6,4 @@
 - useTimeout - 提供start，stop, 组件卸载后自动释放
 - useInterval
 - useObservable 结合rxjs
-- useTouch
+- 使用named export导出

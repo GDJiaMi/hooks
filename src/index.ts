@@ -12,6 +12,7 @@ import useLifeCycles from './useLifeCycles'
 import useGesture from './useGesture'
 import useDraggable from './useDraggable'
 import useMultiTouchGesture from './useMultiTouchGesture'
+import useTouch from './useTouch'
 
 export {
   useRefUnmounted,
@@ -28,4 +29,5 @@ export {
   useDraggable,
   useGesture,
   useMultiTouchGesture,
+  useTouch,
 }
