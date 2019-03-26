@@ -1,4 +1,4 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library'
+import { renderHook, cleanup } from 'react-hooks-testing-library'
 import { useLifeCycles } from '../index'
 
 beforeEach(cleanup)
