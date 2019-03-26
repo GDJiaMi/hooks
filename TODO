@@ -1,5 +1,4 @@
 - hooks 组合机制
-- usePoll 测试
 - useSetState
 - useActive
 - useHover

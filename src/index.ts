@@ -9,6 +9,7 @@ import useTitle from './useTitle'
 import useRefUnmounted from './useRefUnmounted'
 import useToggle from './useToggle'
 import useLifeCycles from './useLifeCycles'
+import useOnMount from './useOnMount'
 import useOnUnmount from './useOnUnmount'
 import useOnUpdate from './useOnUpdate'
 import useGesture from './useGesture'
@@ -29,6 +30,7 @@ export {
   usePromise,
   useToggle,
   useLifeCycles,
+  useOnMount,
   useOnUnmount,
   useOnUpdate,
   useDraggable,
