@@ -1,33 +1,37 @@
 import { useEffect } from 'react'
+import useRefProps from './useRefProps'
+
+export interface UseLifeCyclesOption {
+  onMount?: () => any
+  onUnmount?: () => any
+  onUpdate?: (() => any) | [() => any, ...any[]]
+}
 
 /**
  * 更好理解的React组件生命周期hook
- * @param lifeCycles
+ * @param options
  */
-export default function useLifeCycles(lifeCycles: {
-  onMount?: () => any
-  onUnMount?: () => any
-  onUpdate?: (() => any) | [() => any, ...any[]]
-}) {
+export default function useLifeCycles(options: UseLifeCyclesOption) {
+  const optionsRef = useRefProps(options)
   useEffect(() => {
-    if (lifeCycles.onMount) {
-      lifeCycles.onMount()
+    if (optionsRef.current.onMount) {
+      optionsRef.current.onMount()
     }
 
     return () => {
-      if (lifeCycles.onUnMount) {
-        lifeCycles.onUnMount()
+      if (optionsRef.current.onUnmount) {
+        optionsRef.current.onUnmount()
       }
     }
   }, [])
 
   useEffect(() => {
-    if (lifeCycles.onUpdate) {
-      if (typeof lifeCycles.onUpdate === 'function') {
-        lifeCycles.onUpdate()
+    if (optionsRef.current.onUpdate) {
+      if (typeof optionsRef.current.onUpdate === 'function') {
+        optionsRef.current.onUpdate()
       } else {
-        lifeCycles.onUpdate[0]()
+        optionsRef.current.onUpdate[0]()
       }
     }
-  }, lifeCycles.onUpdate && (typeof lifeCycles.onUpdate === 'function' ? undefined : lifeCycles.onUpdate.slice(1)))
+  }, options.onUpdate && (typeof options.onUpdate === 'function' ? undefined : options.onUpdate.slice(1)))
 }

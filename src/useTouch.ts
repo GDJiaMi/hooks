@@ -129,7 +129,7 @@ export default function useTouch<T extends HTMLElement = HTMLDivElement>(
   }, [])
 
   useLifeCycles({
-    onUnMount: () => {
+    onUnmount: () => {
       cancelLongTap()
       cancelAfterLongTapTimeout()
       cancelSingleTap()

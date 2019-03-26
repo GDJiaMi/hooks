@@ -21,7 +21,7 @@ describe('test useLifeCycles', () => {
     const unmounted = jest.fn()
     const { rerender, unmount } = renderHook(() =>
       useLifeCycles({
-        onUnMount: unmounted,
+        onUnmount: unmounted,
       }),
     )
     expect(unmounted).not.toBeCalled()
