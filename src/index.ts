@@ -18,6 +18,7 @@ import useMultiTouchGesture from './useMultiTouchGesture'
 import useTouch from './useTouch'
 import usePoll from './usePoll'
 import useTimeout from './useTimeout'
+import useInterval from './useInterval'
 
 export {
   useRefUnmounted,
@@ -40,4 +41,5 @@ export {
   useTouch,
   usePoll,
   useTimeout,
+  useInterval,
 }
