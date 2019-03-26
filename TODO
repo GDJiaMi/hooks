@@ -2,7 +2,8 @@
 - useSetState
 - useActive
 - useHover
-- useTimeout - 提供start，stop, 组件卸载后自动释放
-- useInterval
 - useObservable 结合rxjs
+- 参考powerplug
+- useCycle 实现类似cycle的数据源
+- useForm 配合async-validate
 - 使用named export导出
