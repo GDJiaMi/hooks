@@ -10,6 +10,7 @@ import useRefUnmounted from './useRefUnmounted'
 import useToggle from './useToggle'
 import useLifeCycles from './useLifeCycles'
 import useOnUnmount from './useOnUnmount'
+import useOnUpdate from './useOnUpdate'
 import useGesture from './useGesture'
 import useDraggable from './useDraggable'
 import useMultiTouchGesture from './useMultiTouchGesture'
@@ -28,6 +29,7 @@ export {
   useToggle,
   useLifeCycles,
   useOnUnmount,
+  useOnUpdate,
   useDraggable,
   useGesture,
   useMultiTouchGesture,
