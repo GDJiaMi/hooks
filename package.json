@@ -1,22 +1,28 @@
 {
   "name": "@gdjiami/hooks",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "react hooks for mygzb.com",
-  "main": "index.js",
-  "module": "index.js",
-  "typings": "index.d.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "es/index.d.ts",
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -b tsconfig-build.json && cp package.json dist && cp README.md dist",
-    "pub": "npm run build && cd dist && npm publish",
+    "build:clean": "rm -rf es lib",
+    "build:es": "tsc -b tsconfig-build.json",
+    "build:commonjs": "tsc -b tsconfig-build.cm.json",
+    "build": "npm run build:clean && npm run build:es && npm run build:commonjs",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "doc:dev": "docz dev",
     "doc:build": "docz build"
   },
+  "files": [
+    "es",
+    "lib"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
@@ -67,7 +73,5 @@
     "tslib": "^1.9.3",
     "typescript": "^3.3.3333"
   },
-  "dependencies": {
-    "react-hooks-global-state": "^0.7.0"
-  }
+  "dependencies": {}
 }

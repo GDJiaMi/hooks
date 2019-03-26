@@ -7,7 +7,7 @@
     "allowJs": false,
     "jsx": "react",
     "moduleResolution": "node",
-    "outDir": "dist",
+    "outDir": "es",
     "declaration": true,
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,

@@ -3,5 +3,5 @@
   "compilerOptions": {
     "rootDir": "src"
   },
-  "exclude": ["**/__tests__/*", "docs/*"]
+  "exclude": ["**/__tests__/*", "docz/*"]
 }
