@@ -29,6 +29,7 @@ export const Example = () => {
       {touches.map(touch => {
         return (
           <div
+            key={touch.id}
             style={{
               position: 'fixed',
               width: 10,

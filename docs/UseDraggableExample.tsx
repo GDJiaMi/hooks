@@ -6,6 +6,15 @@ export const Example = () => {
     bounds: 'parent',
     edge: true,
     defaultTranslate: { x: 10, y: 10 },
+    onDown: info => {
+      console.log('down', info)
+    },
+    onMove: info => {
+      console.log('move', info)
+    },
+    onUp: info => {
+      console.log('up', info)
+    },
   })
 
   return (

@@ -42,6 +42,21 @@ export interface useDraggableOptions<T extends HTMLElement> {
 }
 
 /**
+ * 获取
+ * @param el
+ */
+function getElementBounds(el: HTMLElement): Bounds {
+  const bounds = el.getBoundingClientRect()
+
+  return {
+    x: bounds.left,
+    y: bounds.top,
+    width: bounds.width,
+    height: bounds.height,
+  }
+}
+
+/**
  * 限定在指定区域内
  *
  * @param offset
@@ -56,7 +71,7 @@ function restrictInBounds(
   if (bounds == null) {
     return offset
   }
-  const elRect = el.getBoundingClientRect() as Bounds
+  const elRect = getElementBounds(el)
   let boundRect: Bounds
 
   if (typeof bounds === 'string') {
@@ -65,7 +80,7 @@ function restrictInBounds(
     if (boundEl == null || !(boundEl instanceof HTMLElement)) {
       throw Error('Bounds selector "' + bounds + '" could not find an element.')
     }
-    boundRect = boundEl.getBoundingClientRect() as Bounds
+    boundRect = getElementBounds(boundEl)
   } else {
     boundRect = bounds
   }
@@ -104,7 +119,7 @@ function berthEdge(
   bounds: Bounds | string = 'body',
   padding: number = 0,
 ): Coordinate {
-  const elRect = el.getBoundingClientRect() as Bounds
+  const elRect = getElementBounds(el)
   let boundRect: Bounds
 
   if (typeof bounds === 'string') {
@@ -113,7 +128,7 @@ function berthEdge(
     if (boundEl == null || !(boundEl instanceof HTMLElement)) {
       throw Error('Bounds selector "' + bounds + '" could not find an element.')
     }
-    boundRect = boundEl.getBoundingClientRect() as Bounds
+    boundRect = getElementBounds(boundEl)
   } else {
     boundRect = bounds
   }
@@ -229,6 +244,7 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
   useEffect(
     () => {
       if (!optionsRef.current.disableTransform) {
+        console.log(x, y)
         el.current!.style.transform = `translate3d(${x}px, ${y}px, 0)`
       }
     },

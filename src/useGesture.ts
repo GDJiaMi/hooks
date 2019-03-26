@@ -59,7 +59,6 @@ export default function useGesture<T extends HTMLElement = HTMLDivElement>(
 
   useEffect(() => {
     const handleActionStart = (event: GestureEvent) => {
-      console.log('touch start', event)
       const pos = extraPosition(event)
       if (pos == null) {
         return
