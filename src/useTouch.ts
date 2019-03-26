@@ -156,6 +156,10 @@ export default function useTouch<T extends HTMLElement = HTMLDivElement>(
           delta <= 250 &&
           Math.abs(state.preTapPosition.x - x1) < 30 &&
           Math.abs(state.preTapPosition.y - y1) < 30
+
+        if (state.isDoubleTap) {
+          cancelSingleTap()
+        }
       }
 
       state.preTapPosition = { x: x1, y: y1 }
@@ -172,20 +176,23 @@ export default function useTouch<T extends HTMLElement = HTMLDivElement>(
         }
         state.preV = v
         state.pinchStartLen = getLen(v)
+        state.multiTouch = true
       } else {
         state.isSingleTap = true
       }
 
       // 长按事件
       state.preventTap = false
-      state.longTapTimeout = window.setTimeout(() => {
-        if (optionRef.current.onLongTap) {
-          optionRef.current.onLongTap(info.touches[0])
-        }
+      if (!state.multiTouch) {
+        state.longTapTimeout = window.setTimeout(() => {
+          if (optionRef.current.onLongTap) {
+            optionRef.current.onLongTap(info.touches[0])
+          }
 
-        // 禁止长按之后tap事件
-        state.preventTap = true
-      }, 750)
+          // 禁止长按之后tap事件
+          state.preventTap = true
+        }, 750)
+      }
     },
     onMove: info => {
       if (optionRef.current.onMove) {
@@ -203,26 +210,30 @@ export default function useTouch<T extends HTMLElement = HTMLDivElement>(
       cancelLongTap()
 
       if (len > 1) {
+        const secCurrentX = info.touches[1].pageX
+        const secCurrentY = info.touches[1].pageY
         const v = {
-          x: info.touches[1].pageX - currentX,
-          y: info.touches[1].pageY - currentY,
+          x: secCurrentX - currentX,
+          y: secCurrentY - currentY,
         }
         if (preV != null) {
-          if (state.pinchStartLen && state.pinchStartLen > 0) {
+          if (
+            state.pinchStartLen &&
+            state.pinchStartLen > 0 &&
+            optionRef.current.onPinch
+          ) {
             // 触发的pinch事件
             const center = {
-              x: (info.touches[1].pageX + currentX) / 2,
-              y: (info.touches[1].pageY + currentY) / 2,
+              x: (secCurrentX + currentX) / 2,
+              y: (secCurrentY + currentY) / 2,
             }
             const scale = getLen(v) / state.pinchStartLen
-            if (optionRef.current.onPinch) {
-              optionRef.current.onPinch({ center, scale })
-            }
+            optionRef.current.onPinch({ center, scale })
           }
 
-          // 触发rotate 事件
-          const angle = getRotateAngle(v, preV)
           if (optionRef.current.onRotate) {
+            // 触发rotate 事件
+            const angle = getRotateAngle(v, preV)
             optionRef.current.onRotate({ angle })
           }
         }
@@ -312,7 +323,7 @@ export default function useTouch<T extends HTMLElement = HTMLDivElement>(
       state.preV = undefined
       state.pinchStartLen = undefined
       state.x1 = state.y1 = state.x2 = state.y2 = undefined
-      state.multiTouch = false
+      state.multiTouch = info.touches.length !== 0
     },
   })
 
