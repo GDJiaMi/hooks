@@ -6,6 +6,6 @@ import { useState, useCallback } from 'react'
 export default function useUpdate() {
   const [, setValue] = useState(0)
   return useCallback(() => {
-    setValue(val => val % (Number.MAX_SAFE_INTEGER - 1))
+    setValue(val => (val + 1) % (Number.MAX_SAFE_INTEGER - 1))
   }, [])
 }
