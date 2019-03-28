@@ -1,4 +1,62 @@
-# React Hooks 库 🚧
+# React Hooks 🚧
+
+A collection for React Hooks
+
+## Install
+
+```shell
+yarn add @gdjiami/hooks -D
+#or
+npm i @gdjiami/hooks --save-dev
+```
+
+## Usage
+
+```jsx
+import React, { useState } from 'react'
+import {
+  useToggle,
+  useOnMount,
+  useOnUnmount,
+  useOnUpdate,
+} from '@gdjiami/hooks'
+
+export const Countter = () => {
+  const [open, toggleOpen] = useToggle(true)
+  const [counter, setCounter] = useState(0)
+
+  useOnMount(() => {
+    console.log('mounted')
+  })
+
+  useOnUpdate(() => {
+    console.log('counter update:', counter)
+  }, counter)
+
+  useOnUnmount(() => {
+    console.log('will unmount')
+  })
+
+  return (
+    <div>
+      <button onClick={toggleOpen}>{open ? 'on' : 'off'}</button>
+      {open && (
+        <div>
+          <div>counter: {counter}</div>
+          <div>
+            <button onClick={() => setCounter(counter + 1)}>increase</button>
+            <button onClick={() => setCounter(counter + 1)}>decrease</button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+```
+
+## Example
+
+## Docs
 
 ## Related Project
 
