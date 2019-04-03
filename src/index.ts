@@ -1,4 +1,5 @@
 import useAsyncOnMount from './useAsyncOnMount'
+import useDebounce from './useDebounce'
 import useDraggable from './useDraggable'
 import useGesture from './useGesture'
 import useInput from './useInput'
@@ -24,6 +25,7 @@ import useUpdate from './useUpdate'
 
 export {
   useAsyncOnMount,
+  useDebounce,
   useDraggable,
   useGesture,
   useInput,
