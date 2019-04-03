@@ -17,6 +17,7 @@ import useRefProps from './useRefProps'
 import useRefState from './useRefState'
 import useRefUnmounted from './useRefUnmounted'
 import useSession from './useSession'
+import useThrottle from './useThrottle'
 import useTimeout from './useTimeout'
 import useTitle from './useTitle'
 import useToggle from './useToggle'
@@ -43,6 +44,7 @@ export {
   useRefState,
   useRefUnmounted,
   useSession,
+  useThrottle,
   useTimeout,
   useTitle,
   useToggle,
