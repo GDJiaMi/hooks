@@ -1,4 +1,6 @@
 import { useState, useCallback } from 'react'
+import useRefProps from './useRefProps'
+import useRefState from './useRefState'
 
 export interface Res<T, S> {
   loading: boolean
@@ -8,36 +10,49 @@ export interface Res<T, S> {
   call: T
 }
 
-export default function usePromise<T>(
+export interface UsePromiseOptions {
+  skipWhenLoading?: boolean
+}
+
+function usePromise<T>(
   action: () => Promise<T>,
-  args?: any[],
+  option?: UsePromiseOptions,
 ): Res<() => Promise<T>, T>
-export default function usePromise<T, A>(
+function usePromise<T, A>(
   action: (arg0: A) => Promise<T>,
-  args?: any[],
+  option?: UsePromiseOptions,
 ): Res<(arg0: A) => Promise<T>, T>
-export default function usePromise<T, A, B>(
+function usePromise<T, A, B>(
   action: (arg0: A, arg1: B) => Promise<T>,
-  args?: any[],
+  option?: UsePromiseOptions,
 ): Res<(arg0: A, arg1: B) => Promise<T>, T>
-export default function usePromise<T, A, B, C>(
+function usePromise<T, A, B, C>(
   action: (arg0: A, arg1: B, arg2: C) => Promise<T>,
-  args?: any[],
+  option?: UsePromiseOptions,
 ): Res<(arg0: A, arg1: B, arg2: C) => Promise<T>, T>
-export default function usePromise<T, A, B, C, D>(
+function usePromise<T, A, B, C, D>(
   action: (arg0: A, arg1: B, arg2: C, arg3: D) => Promise<T>,
-  args?: any[],
-): Res<(arg0: A, arg1: B, arg2: C, arg3: D) => Promise<T>, T> {
-  const [loading, setLoading] = useState(false)
-  const [value, setValue] = useState<T>()
+  option?: UsePromiseOptions,
+): Res<(arg0: A, arg1: B, arg2: C, arg3: D) => Promise<T>, T>
+function usePromise(
+  action: (...args: any[]) => Promise<any>,
+  option: UsePromiseOptions = { skipWhenLoading: true },
+): Res<(...args: any) => Promise<any>, any> {
+  const actionRef = useRefProps(action)
+  const optionRef = useRefProps(option)
+  const [loading, setLoading, loadingRef] = useRefState(false)
+  const [value, setValue] = useState()
   const [error, setError] = useState<Error | undefined>()
 
   const caller = useCallback(async (...args: any[]) => {
     try {
+      if (loadingRef.current && optionRef.current.skipWhenLoading) {
+        return
+      }
+
       setLoading(true)
       setError(undefined)
-      // @ts-ignore
-      const res = await action(...args)
+      const res = await actionRef.current(...args)
       setValue(res)
       return res
     } catch (err) {
@@ -45,7 +60,9 @@ export default function usePromise<T, A, B, C, D>(
     } finally {
       setLoading(false)
     }
-  }, args || [])
+  }, [])
 
   return { loading, error, call: caller, value, setValue }
 }
+
+export default usePromise

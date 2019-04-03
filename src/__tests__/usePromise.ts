@@ -6,7 +6,7 @@ const MOCK_ERROR = new Error('MOCK ERROR')
 
 afterEach(cleanup)
 
-it('should call promise with specified args', () => {
+it('should call promise with specified args', async () => {
   const fn = jest.fn(() => Promise.resolve())
   const {
     result: { current },
@@ -17,13 +17,14 @@ it('should call promise with specified args', () => {
   })
 
   expect(fn).toBeCalled()
+  await microDelay()
 
   act(() => {
     // @ts-ignore
     current.call(1, true, [1, 2, 3])
   })
 
-  expect(fn).toBeCalledWith(1, true, [1, 2, 3])
+  expect(fn).toHaveBeenLastCalledWith(1, true, [1, 2, 3])
 })
 
 it('should set Loading in process of promise', async () => {
