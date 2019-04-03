@@ -4,6 +4,7 @@ export interface Res<T, S> {
   loading: boolean
   error?: Error
   value?: S
+  setValue: (v: S) => void
   call: T
 }
 
@@ -46,5 +47,5 @@ export default function usePromise<T, A, B, C, D>(
     }
   }, args || [])
 
-  return { loading, error, call: caller, value }
+  return { loading, error, call: caller, value, setValue }
 }
