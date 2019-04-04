@@ -5,7 +5,6 @@ import useGesture from './useGesture'
 import useInput from './useInput'
 import useInstance from './useInstance'
 import useInterval from './useInterval'
-import useLifeCycles from './useLifeCycles'
 import useMultiTouchGesture from './useMultiTouchGesture'
 import useOnMount from './useOnMount'
 import useOnUnmount from './useOnUnmount'
@@ -32,7 +31,6 @@ export {
   useInput,
   useInstance,
   useInterval,
-  useLifeCycles,
   useMultiTouchGesture,
   useOnMount,
   useOnUnmount,
