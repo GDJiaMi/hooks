@@ -22,6 +22,7 @@ import useTitle from './useTitle'
 import useToggle from './useToggle'
 import useTouch from './useTouch'
 import useUpdate from './useUpdate'
+export * from './useRefMounted'
 
 export {
   useAsyncOnMount,
