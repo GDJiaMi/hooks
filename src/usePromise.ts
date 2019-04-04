@@ -34,6 +34,14 @@ function usePromise<T, A, B, C, D>(
   action: (arg0: A, arg1: B, arg2: C, arg3: D) => Promise<T>,
   option?: UsePromiseOptions,
 ): Res<(arg0: A, arg1: B, arg2: C, arg3: D) => Promise<T>, T>
+function usePromise<T, A, B, C, D, E>(
+  action: (arg0: A, arg1: B, arg2: C, arg3: D, arg4: E) => Promise<T>,
+  option?: UsePromiseOptions,
+): Res<(arg0: A, arg1: B, arg2: C, arg3: D, arg4: E) => Promise<T>, T>
+function usePromise(
+  action: (...args: any[]) => Promise<any>,
+  option?: UsePromiseOptions,
+): Res<(...args: any) => Promise<any>, any>
 function usePromise(
   action: (...args: any[]) => Promise<any>,
   option: UsePromiseOptions = { skipWhenLoading: true },

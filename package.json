@@ -14,7 +14,8 @@
     "build:es": "tsc -b tsconfig-build.json",
     "build:commonjs": "tsc -b tsconfig-build.cm.json",
     "build": "npm run build:clean && npm run build:es && npm run build:commonjs",
-    "test": "jest --coverage",
+    "test:type": "tsc -b tsconfig.test.json",
+    "test": "jest --coverage && npm run test:type",
     "test:watch": "jest --watch",
     "doc:dev": "docz dev",
     "doc:build": "docz build"
@@ -31,6 +32,10 @@
   "jest": {
     "testMatch": [
       "**/__tests__/**/!(helper)*.ts?(x)"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/typescript/"
     ],
     "roots": [
       "src"

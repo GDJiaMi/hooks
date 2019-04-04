@@ -17,6 +17,12 @@ function useDebounce<A, B, C, D>(
   ms: number,
   args: [A, B, C, D],
 ): void
+function useDebounce<A, B, C, D, E>(
+  fn: (a: A, b: B, c: C, d: D, e: E) => any,
+  ms: number,
+  args: [A, B, C, D, E],
+): void
+function useDebounce(fn: (...args: any) => any, ms: number, args: any[]): void
 function useDebounce(
   fn: (...args: any) => any,
   ms: number = 1000,

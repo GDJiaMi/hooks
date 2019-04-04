@@ -29,6 +29,11 @@ function useOnUpdate<A, B, C, D, E>(
 ): void
 function useOnUpdate(
   fn: (...args: any[]) => any,
+  args: any[],
+  skipOnMount?: boolean,
+): void
+function useOnUpdate(
+  fn: (...args: any[]) => any,
   args: any[] = [],
   skipOnMount: boolean = true,
 ) {
