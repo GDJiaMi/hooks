@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import useRefProps from './useRefProps'
 
-function useOnUpdate(fn: () => any, args?: any[], skipOnMount?: boolean): void
+function useOnUpdate(fn: () => any): void
 function useOnUpdate<A>(
   fn: (a: A) => any,
   args: [A],
