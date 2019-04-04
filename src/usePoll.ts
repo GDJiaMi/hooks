@@ -3,7 +3,7 @@ import useRefProps from './useRefProps'
 import useRefState from './useRefState'
 import useOnUnmount from './useOnUnmount'
 import useInstance from './useInstance'
-import useOnUpdate from './useOnUpdate'
+import { useOnUpdate } from './useOnUpdate'
 
 export interface UsePollOptions<T> {
   /**
@@ -88,16 +88,20 @@ export default function usePoll<T = any>(options: UsePollOptions<T>) {
     )
   }, [])
 
-  useOnUpdate(async () => {
-    if (pollingRef.current) {
-      return
-    }
+  useOnUpdate(
+    async () => {
+      if (pollingRef.current) {
+        return
+      }
 
-    // setup
-    if (await optionsRef.current.condition()) {
-      poll()
-    }
-  }, ...(options.args || []))
+      // setup
+      if (await optionsRef.current.condition()) {
+        poll()
+      }
+    },
+    options.args || [],
+    false,
+  )
 
   useOnUnmount(() => {
     window.clearTimeout(state.timer)

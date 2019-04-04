@@ -8,7 +8,6 @@ import useInterval from './useInterval'
 import useMultiTouchGesture from './useMultiTouchGesture'
 import useOnMount from './useOnMount'
 import useOnUnmount from './useOnUnmount'
-import useOnUpdate from './useOnUpdate'
 import usePoll from './usePoll'
 import usePrevious from './usePrevious'
 import usePromise from './usePromise'
@@ -23,6 +22,7 @@ import useToggle from './useToggle'
 import useTouch from './useTouch'
 import useUpdate from './useUpdate'
 export * from './useRefMounted'
+export * from './useOnUpdate'
 
 export {
   useAsyncOnMount,
@@ -35,7 +35,6 @@ export {
   useMultiTouchGesture,
   useOnMount,
   useOnUnmount,
-  useOnUpdate,
   usePoll,
   usePrevious,
   usePromise,

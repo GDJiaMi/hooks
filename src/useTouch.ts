@@ -5,7 +5,7 @@ import useMultiTouchGesture, {
   MultiTouchGesture,
 } from './useMultiTouchGesture'
 import useRefProps from './useRefProps'
-import useLifeCycles from './useLifeCycles'
+import useOnUnmount from './useOnUnmount'
 
 export { GestureCoordinate }
 
@@ -128,12 +128,10 @@ export default function useTouch<T extends HTMLElement = HTMLDivElement>(
     clearTimeout(state.singleTapTimeout)
   }, [])
 
-  useLifeCycles({
-    onUnmount: () => {
-      cancelLongTap()
-      cancelAfterLongTapTimeout()
-      cancelSingleTap()
-    },
+  useOnUnmount(() => {
+    cancelLongTap()
+    cancelAfterLongTapTimeout()
+    cancelSingleTap()
   })
 
   useMultiTouchGesture({
