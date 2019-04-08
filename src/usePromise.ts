@@ -8,6 +8,7 @@ export interface Res<T, S> {
   value?: S
   setValue: (v: S) => void
   call: T
+  reset: () => void
 }
 
 export interface UsePromiseOptions {
@@ -61,6 +62,9 @@ function usePromise(
       setLoading(true)
       setError(undefined)
       const res = await actionRef.current(...args)
+      if (!loadingRef.current) {
+        return
+      }
       setValue(res)
       return res
     } catch (err) {
@@ -70,7 +74,13 @@ function usePromise(
     }
   }, [])
 
-  return { loading, error, call: caller, value, setValue }
+  const reset = useCallback(() => {
+    setLoading(false)
+    setValue(undefined)
+    setError(undefined)
+  }, [])
+
+  return { loading, error, call: caller, value, setValue, reset }
 }
 
 export default usePromise
