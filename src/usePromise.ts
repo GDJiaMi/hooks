@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import useRefProps from './useRefProps'
 import useRefState from './useRefState'
+import { getUid } from './utils'
 
 export interface Res<T, S> {
   loading: boolean
@@ -12,7 +13,10 @@ export interface Res<T, S> {
 }
 
 export interface UsePromiseOptions {
-  skipWhenLoading?: boolean
+  /**
+   * skip execution when previous promise has not ended. default is true
+   */
+  skipOnLoading?: boolean
 }
 
 function usePromise<T>(
@@ -45,26 +49,32 @@ function usePromise(
 ): Res<(...args: any) => Promise<any>, any>
 function usePromise(
   action: (...args: any[]) => Promise<any>,
-  option: UsePromiseOptions = { skipWhenLoading: true },
+  option: UsePromiseOptions = { skipOnLoading: true },
 ): Res<(...args: any) => Promise<any>, any> {
   const actionRef = useRefProps(action)
   const optionRef = useRefProps(option)
   const [loading, setLoading, loadingRef] = useRefState(false)
+  const [, setTaskId, taskIdRef] = useRefState(0)
   const [value, setValue] = useState()
   const [error, setError] = useState<Error | undefined>()
 
   const caller = useCallback(async (...args: any[]) => {
     try {
-      if (loadingRef.current && optionRef.current.skipWhenLoading) {
+      if (loadingRef.current && optionRef.current.skipOnLoading) {
         return
       }
 
+      const taskId = getUid()
+      setTaskId(taskId)
       setLoading(true)
       setError(undefined)
       const res = await actionRef.current(...args)
-      if (!loadingRef.current) {
+
+      if (taskId !== taskIdRef.current) {
+        // replace by new promise task
         return
       }
+
       setValue(res)
       return res
     } catch (err) {

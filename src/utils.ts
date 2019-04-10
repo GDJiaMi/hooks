@@ -104,3 +104,8 @@ export function clamp(num: number, lower: number, upper: number) {
 
   return num
 }
+
+let uid = 0
+export function getUid() {
+  return (uid = uid + (1 % (Number.MAX_SAFE_INTEGER - 1)))
+}
