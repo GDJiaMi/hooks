@@ -7,3 +7,4 @@
 - useCycle 实现类似cycle的数据源
 - useForm 配合async-validate
 - 使用named export导出
+- useBind 绑定部分函数参数
