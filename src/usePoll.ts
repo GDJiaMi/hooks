@@ -28,6 +28,10 @@ export interface UsePollOptions<T> {
    * watching arguments. when these arguments change, usePoll will recheck condition
    */
   args?: any[]
+  /**
+   * poll immediately, default is false
+   */
+  immediately?: boolean
 }
 
 /**
@@ -96,7 +100,7 @@ export default function usePoll<T = any>(options: UsePollOptions<T>) {
 
       // setup
       if (await optionsRef.current.condition()) {
-        poll()
+        poll(options.immediately)
       }
     },
     options.args || [],
