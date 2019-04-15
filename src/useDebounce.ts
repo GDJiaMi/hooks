@@ -29,7 +29,7 @@ function useDebounce(
   args: any[] = [],
 ) {
   useEffect(() => {
-    let handle = setTimeout(fn.bind(null, args), ms)
+    let handle = setTimeout(fn.bind(null, ...args), ms)
 
     return () => {
       // if args change then clear timeout
