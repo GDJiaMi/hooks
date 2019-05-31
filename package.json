@@ -1,6 +1,6 @@
 {
   "name": "@gdjiami/hooks",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "react hooks for mygzb.com",
   "main": "lib/index.js",
   "module": "es/index.js",

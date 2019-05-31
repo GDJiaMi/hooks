@@ -6,6 +6,8 @@ import { getUid } from './utils'
 export interface Res<T, S> {
   loading: boolean
   error?: Error
+  setError?: (v?: Error) => void
+  setLoading?: (v: boolean) => void
   value?: S
   setValue: (v: S) => void
   call: T
@@ -79,6 +81,7 @@ function usePromise(
       return res
     } catch (err) {
       setError(err)
+      throw err
     } finally {
       setLoading(false)
     }
@@ -90,7 +93,16 @@ function usePromise(
     setError(undefined)
   }, [])
 
-  return { loading, error, call: caller, value, setValue, reset }
+  return {
+    loading,
+    error,
+    call: caller,
+    value,
+    setValue,
+    reset,
+    setError,
+    setLoading,
+  }
 }
 
 export default usePromise

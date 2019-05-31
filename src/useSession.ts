@@ -5,6 +5,7 @@ import { useState, useCallback, Dispatch, SetStateAction } from 'react'
  *
  * @param key
  * @param keepOnWindowClosed
+ * @param clear
  */
 export default function useSession<T>(
   key: string,
