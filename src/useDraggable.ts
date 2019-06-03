@@ -244,7 +244,6 @@ export default function useDraggable<T extends HTMLElement = HTMLDivElement>(
   useEffect(
     () => {
       if (!optionsRef.current.disableTransform) {
-        console.log(x, y)
         el.current!.style.transform = `translate3d(${x}px, ${y}px, 0)`
       }
     },

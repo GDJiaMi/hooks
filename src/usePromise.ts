@@ -6,8 +6,8 @@ import { getUid } from './utils'
 export interface Res<T, S> {
   loading: boolean
   error?: Error
-  setError?: (v?: Error) => void
-  setLoading?: (v: boolean) => void
+  setError: (v?: Error) => void
+  setLoading: (v: boolean) => void
   value?: S
   setValue: (v: S) => void
   call: T
