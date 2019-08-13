@@ -1,6 +1,6 @@
 {
   "name": "@gdjiami/hooks",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "react hooks for mygzb.com",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -9,6 +9,7 @@
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
+  "sideEffects": false,
   "scripts": {
     "build:clean": "rm -rf es lib",
     "build:es": "tsc -b tsconfig-build.json",
