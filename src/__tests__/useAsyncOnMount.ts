@@ -1,11 +1,11 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library'
+import { renderHook, act, cleanup } from '@testing-library/react-hooks'
 import { useAsyncOnMount } from '../index'
 import { delay } from './helper'
 
-afterEach(cleanup)
-
 const MOCK_ERROR = new Error('mockError')
 const MOCK_RETURN = 'HELLO'
+
+beforeEach(cleanup)
 
 describe('test useASyncOnMount', () => {
   it('should call fn', async () => {
@@ -29,46 +29,37 @@ describe('test useASyncOnMount', () => {
   })
 
   it('should set loading', async () => {
-    act(async () => {
-      const fn = jest.fn(() => Promise.reject(MOCK_ERROR))
-      const {
-        result: { current },
-      } = renderHook(() => useAsyncOnMount(fn))
-      expect(current.loading).toBeTruthy()
+    const fn = jest.fn(() => Promise.reject(MOCK_ERROR))
+    const { result, waitForNextUpdate } = renderHook(() => useAsyncOnMount(fn))
 
-      await delay()
-      expect(current.loading).toBeFalsy()
-    })
+    expect(result.current.loading).toBeTruthy()
+
+    await waitForNextUpdate()
+
+    expect(result.current.loading).toBeFalsy()
   })
 
   it('should set error when fn throw', async () => {
     act(async () => {
       const fn = jest.fn(() => Promise.reject(MOCK_ERROR))
-      const {
-        result: { current },
-        rerender,
-      } = renderHook(() => useAsyncOnMount(fn))
+      const { result, rerender } = renderHook(() => useAsyncOnMount(fn))
 
       await delay()
-      expect(current.error).toBe(MOCK_ERROR)
+      expect(result.current.error).toBe(MOCK_ERROR)
 
       act(() => {
-        current.retry()
+        result.current.retry()
       })
 
       rerender()
-      expect(current.error).toBeNull()
+      expect(result.current.error).toBeUndefined()
     })
   })
 
   it('should return specified value', async () => {
-    act(async () => {
-      const fn = jest.fn(() => Promise.resolve(MOCK_RETURN))
-      const {
-        result: { current },
-      } = renderHook(() => useAsyncOnMount(fn))
-      await delay()
-      expect(current.value).toBe(MOCK_RETURN)
-    })
+    const fn = jest.fn(() => Promise.resolve(MOCK_RETURN))
+    const { result } = renderHook(() => useAsyncOnMount(fn))
+    await delay()
+    expect(result.current.value).toBe(MOCK_RETURN)
   })
 })

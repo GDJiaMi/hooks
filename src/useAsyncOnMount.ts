@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from 'react'
 
 /**
  * 在组件挂载时执行异步操作
+ * @deprecated
  */
 export default function useAsyncOnMount<T>(
   fn: (() => Promise<T | undefined>),

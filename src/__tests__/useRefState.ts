@@ -1,4 +1,4 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library'
+import { renderHook, cleanup, act } from '@testing-library/react-hooks'
 import { useRefState } from '../index'
 
 afterEach(cleanup)

@@ -1,4 +1,4 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library'
+import { renderHook, cleanup, act } from '@testing-library/react-hooks'
 import { useInput } from '../index'
 
 afterEach(cleanup)
@@ -9,7 +9,7 @@ it('should set Value after event triggered', () => {
 
   act(() => {
     result.current.onChange({
-      target: { value: 'new value' },
+      currentTarget: { value: 'new value' },
     } as React.ChangeEvent<{ value: string }>)
   })
 

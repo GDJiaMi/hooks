@@ -1,4 +1,4 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library'
+import { renderHook, cleanup, act } from '@testing-library/react-hooks'
 import { usePromise } from '../index'
 import { microDelay } from './helper'
 
@@ -44,8 +44,12 @@ it('should set Error when promise throw error', async () => {
   const fn = jest.fn(() => Promise.reject(MOCK_ERROR))
   const { result } = renderHook(() => usePromise(fn))
 
-  act(() => {
-    result.current.call()
+  await act(async () => {
+    try {
+      await result.current.call()
+    } catch (err) {
+      expect(err).toBe(MOCK_ERROR)
+    }
   })
 
   await microDelay()

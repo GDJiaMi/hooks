@@ -1,4 +1,4 @@
-import { renderHook, cleanup, act } from 'react-hooks-testing-library'
+import { renderHook, cleanup, act } from '@testing-library/react-hooks'
 import { useToggle, useRefState, useSession } from '../index'
 
 beforeEach(cleanup)

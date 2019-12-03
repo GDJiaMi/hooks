@@ -1,4 +1,4 @@
-import { renderHook, cleanup } from 'react-hooks-testing-library'
+import { renderHook, cleanup } from '@testing-library/react-hooks'
 import { useTitle } from '../index'
 
 beforeEach(cleanup)
